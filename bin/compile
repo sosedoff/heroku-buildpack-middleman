@@ -7,28 +7,27 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 
 # Buildpack URL
-ARCHIVE_URL=https://dl.dropboxusercontent.com/u/486271/server_linux_amd64.zip
-ARCHIVE_NAME=server_linux_amd64.zip
-FILE_NAME=server_linux_amd64
+VERSION="1.0"
+ARCHIVE_URL="https://github.com/sosedoff/middleman-buildpack/releases/download/v$VERSION/server_linux_amd64.zip"
+ARCHIVE_NAME="server_linux_amd64.zip"
+FILE_NAME="server_linux_amd64"
+PROFILE_PATH="$BUILD_DIR/.profile.d/server.sh"
 
 mkdir -p $CACHE_DIR
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching static server binaries"
+  echo "-----> Fetching static server binary"
   curl $ARCHIVE_URL -L -s -o $CACHE_DIR/$ARCHIVE_NAME
 fi
 
-echo "-----> Extracting binaries"
-unzip -d $CACHE_DIR $CACHE_DIR/$ARCHIVE_NAME
+echo "-----> Installing static server binary"
+unzip -q -d $CACHE_DIR $CACHE_DIR/$ARCHIVE_NAME
 mkdir -p $BUILD_DIR/vendor
 mv $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor/server
-
-echo "-----> Exporting PATH for the static server"
-PROFILE_PATH="$BUILD_DIR/.profile.d/server.sh"
 mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$PATH:$HOME/vendor"' >> $PROFILE_PATH
 
 # Work in the build directory
-cd $1
+cd $BUILD_DIR
 
 # Set HOME to build directory in order to get the bundle command in the PATH
 HOME_BACK=$HOME
