@@ -13,12 +13,12 @@ FILE_NAME=server_linux_amd64
 
 mkdir -p $CACHE_DIR
 if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
-  echo "-----> Fetching static server binaries at ${ARCHIVE_URL}"
+  echo "-----> Fetching static server binaries"
   curl $ARCHIVE_URL -L -s -o $CACHE_DIR/$ARCHIVE_NAME
 fi
 
-echo "-----> Extracting binaries to ${BUILD_DIR}/vendor/server"
-unzip $CACHE_DIR/$ARCHIVE_NAME
+echo "-----> Extracting binaries"
+unzip -d $CACHE_DIR $CACHE_DIR/$ARCHIVE_NAME
 mkdir -p $BUILD_DIR/vendor
 mv $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor/server
 
