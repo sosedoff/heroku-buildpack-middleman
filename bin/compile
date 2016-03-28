@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+# Buildpack URL
+ARCHIVE_URL=https://dl.dropboxusercontent.com/u/486271/server_linux_amd64.zip
+ARCHIVE_NAME=server_linux_amd64.zip
+FILE_NAME=server_linux_amd64
+
+mkdir -p $CACHE_DIR
+if ! [ -e $CACHE_DIR/$FILE_NAME ]; then
+  echo "-----> Fetching static server binaries at ${ARCHIVE_URL}"
+  curl $ARCHIVE_URL -L -s -o $CACHE_DIR/$ARCHIVE_NAME
+fi
+
+echo "-----> Extracting binaries to ${BUILD_DIR}/vendor/server"
+unzip $CACHE_DIR/$ARCHIVE_NAME
+mkdir -p $BUILD_DIR/vendor
+mv $CACHE_DIR/$FILE_NAME $BUILD_DIR/vendor/server
+
+echo "-----> Exporting PATH for the static server"
+PROFILE_PATH="$BUILD_DIR/.profile.d/server.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export PATH="$PATH:$HOME/vendor"' >> $PROFILE_PATH
+
+# Work in the build directory
+cd $1
+
+# Set HOME to build directory in order to get the bundle command in the PATH
+HOME_BACK=$HOME
+export HOME=$1
+
+# Source in all the profile stuff
+for profile in ./.profile.d/*; do
+    . ${profile}
+done
+
+# If there is an env dir, source it
+if [ -d "$3" ]; then
+    for e in $(ls $3); do
+        export "$e=$(cat $3/$e)"
+        :
+    done
+fi
+
+# Set HOME back to default value
+export HOME=$HOME_BACK
+
+# Just build the static site
+bundle exec middleman build --clean --verbose
