@@ -7,7 +7,10 @@ It is cleaner than most Middleman build packs out there because it
 takes advantage of the [heroku-buildpack-multi](https://github.com/ddollar/heroku-buildpack-multi)
 buildpack to separate out the Ruby and Middleman specific components.
 
-**derived from https://github.com/hashicorp/heroku-buildpack-middleman**
+It uses a simple HTTP server written in Go (see server.go) to server all static
+pages and assets instead of standard `middleman server` command.
+
+*derived from https://github.com/hashicorp/heroku-buildpack-middleman*
 
 ## Usage
 
