@@ -9,4 +9,5 @@ if [ -f $1/config.rb ]; then
     fi
 fi
 
+echo "Middleman was not detected, aborting!"
 exit 1
