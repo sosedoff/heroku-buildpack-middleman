@@ -23,7 +23,7 @@ $ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-mu
 ...
 $ cat .buildpacks
 https://github.com/heroku/heroku-buildpack-ruby.git
-https://github.com/sosedoff/middleman-buildpack.git
+https://github.com/sosedoff/heroku-buildpack-middleman.git
 ```
 
 Then just push!

@@ -8,7 +8,7 @@ CACHE_DIR=$2
 
 # Buildpack URL
 VERSION="1.0"
-ARCHIVE_URL="https://github.com/sosedoff/middleman-buildpack/releases/download/v$VERSION/server_linux_amd64.zip"
+ARCHIVE_URL="https://github.com/sosedoff/heroku-buildpack-middleman/releases/download/v$VERSION/server_linux_amd64.zip"
 ARCHIVE_NAME="server_linux_amd64.zip"
 FILE_NAME="server_linux_amd64"
 PROFILE_PATH="$BUILD_DIR/.profile.d/server.sh"
