@@ -3,27 +3,41 @@
 This is a build pack for [Middleman](http://middlemanapp.com) that will
 create your static site.
 
-It is cleaner than most Middleman build packs out there because it
-takes advantage of the [heroku-buildpack-multi](https://github.com/ddollar/heroku-buildpack-multi)
-buildpack to separate out the Ruby and Middleman specific components.
-
-It uses a simple HTTP server written in Go (see server.go) to server all static
-pages and assets instead of standard `middleman server` command.
-
-*derived from https://github.com/hashicorp/heroku-buildpack-middleman*
+It uses a simple HTTP server written in Go (see server.go) to serve all static
+pages and assets instead of standard `middleman server` command. There's also support
+for basic authentication with user/password and a handler for missing pages.
 
 ## Usage
 
-This build pack is meant to be used with the
-[heroku-buildpack-multi](https://github.com/ddollar/heroku-buildpack-multi)
-buildpack. Setup generally goes like this with an existing Heroku app:
+Add the buildpack to your Heroku project:
 
 ```
-$ heroku config:add BUILDPACK_URL=https://github.com/ddollar/heroku-buildpack-multi.git
-...
-$ cat .buildpacks
-https://github.com/heroku/heroku-buildpack-ruby.git
-https://github.com/sosedoff/heroku-buildpack-middleman.git
+heroku buildpacks:add https://github.com/sosedoff/heroku-buildpack-middleman
 ```
 
-Then just push!
+### Serve Directory
+
+By default application will try to serve files from `build` directory. You can change
+it with `STATIC_DIR` environment variable:
+
+```
+heroku config:set STATIC_DIR=my-assets
+```
+
+### Authentication
+
+To require basic authentication set the following environment variables (both are required):
+
+```
+heroku config:set AUTH_USER=admin AUTH_PASSWORD=password
+```
+
+### 404 Pages
+
+If you want to customize the default 404 page (which is plain text), add the following var:
+
+```
+heroku config:set NOT_FOUND_PATH=/404.html
+```
+
+Make sure you have `404.html` file in your static assets directory.
