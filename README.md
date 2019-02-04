@@ -1,6 +1,6 @@
-# Middleman Build Pack
+# Middleman BuildPack
 
-This is a build pack for [Middleman](http://middlemanapp.com) that will
+This is a buildpack for [Middleman](http://middlemanapp.com) that will
 create your static site.
 
 It uses a simple HTTP server written in Go (see server.go) to serve all static
@@ -15,10 +15,10 @@ Add the buildpack to your Heroku project:
 heroku buildpacks:add https://github.com/sosedoff/heroku-buildpack-middleman
 ```
 
-### Serve Directory
+### Root Directory
 
 By default application will try to serve files from `build` directory. You can change
-it with `STATIC_DIR` environment variable:
+that with `STATIC_DIR` environment variable:
 
 ```
 heroku config:set STATIC_DIR=my-assets
